@@ -1,5 +1,9 @@
 numpy
-matplotlib.pyplot
+matplotlib
 scipy
 torch
+<<<<<<< HEAD
 itertools
+=======
+panda
+>>>>>>> 18a4f3e6610c0740105cd8e74b6c5c76f075c1f0
