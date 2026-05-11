@@ -2,3 +2,4 @@ numpy
 matplotlib.pyplot
 scipy
 torch
+itertools
