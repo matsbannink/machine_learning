@@ -19,7 +19,7 @@ print(df_for_mix.head())
 def generate_mixture_spectra(
     df,
     wavelength_col="Wavelength",
-    combination_sizes=(1, 2, 3),
+    combination_sizes=(2, 3),
     n_mixtures_per_combination=5,
     random_state=42
 ):
@@ -80,7 +80,7 @@ def generate_mixture_spectra(
     return mixtures_df, weights_df
 
 
-combination_sizes = (1, 2, 3)      
+combination_sizes = (2, 3)      
 n_mixtures_per_combination = 5
 
 mixtures_df, weights_df = generate_mixture_spectra(
