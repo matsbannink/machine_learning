@@ -1,4 +1,5 @@
 numpy
-matplotlib.pyplot
+matplotlib
 scipy
 torch
+panda
