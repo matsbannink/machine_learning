@@ -45,11 +45,10 @@ def generate_mixture_spectra(
     # All species columns
     spectrum_cols = [c for c in df.columns if c != wavelength_col]
 
-    # Start with a copy so we keep the pure spectra
-    mixtures_df = df.copy()
-
     # To store composition (weights) for each mixture column
     weights_records = []
+
+    new_mixtures_dict = {}
 
     for k in combination_sizes:
         # All k-element combinations of the spectrum columns
@@ -67,13 +66,17 @@ def generate_mixture_spectra(
 
                 # Unique column name for this mixture
                 mix_col_name = f"mix{k}_{comb_name_base}_{m}"
-                mixtures_df[mix_col_name] = mix_spectrum
+
+                new_mixtures_dict[mix_col_name] = mix_spectrum
 
                 # Store the weights and which species were used
                 record = {"mixture_name": mix_col_name}
                 for col, w in zip(comb, weights):
                     record[col] = w
                 weights_records.append(record)
+
+    new_mixtures_df = pd.DataFrame(new_mixtures_dict)
+    mixtures_df = pd.concat([df, new_mixtures_df], axis=1)
 
     weights_df = pd.DataFrame(weights_records).fillna(0.0)
 
