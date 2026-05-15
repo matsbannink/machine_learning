@@ -1,5 +1,6 @@
 import itertools
 import numpy as np
+<<<<<<< Updated upstream
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -180,3 +181,6 @@ chosen_species = [
     "Diatom_Csimplex",
     "Cyanobacteria_Synechosystis",
 ]
+=======
+import matplotlib.pyplot as plt
+>>>>>>> Stashed changes
