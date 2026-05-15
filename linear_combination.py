@@ -86,6 +86,7 @@ def generate_mixture_spectra(
 
     return mixtures_df, weights_df
 
+# Not using scattering
 combination_sizes = (2, 3)      
 n_mixtures_per_combination = 5
 
@@ -97,7 +98,6 @@ mixtures_df, weights_df = generate_mixture_spectra(
     random_state=42
 )
 
-# Not using scattering
 output_spectra_path = "Spectral_library_with_mixtures.xlsx"
 output_weights_path = "Spectral_library_mixture_weights.xlsx"
 
@@ -109,6 +109,9 @@ print("Mixture weights saved to:", output_weights_path)
 
 wavelength_col = "Wavelength"
 wavelengths = df_norm[wavelength_col].values
+
+Diatom_Ptricornutum_no_scat = df_norm["Diatom_Ptricornutum"].values
+Dinoflagellate_Symbiodiniumsp_no_scat = df_norm["Dinoflagellate_Symbiodiniumsp"].values
 
 plt.figure(figsize=(8, 5))
 
@@ -125,7 +128,6 @@ plt.savefig("pure_spectra_without_scattering.png")
 
 # Using scattering
 df_for_mix_scat = pd.read_excel("Spectral_library_with_scattering.xlsx")
-df_for_mix_scat[spectrum_cols] = df_for_mix_scat[spectrum_cols].replace(0, np.nan)
 combination_sizes = (2, 3)      
 n_mixtures_per_combination = 5
 
@@ -146,8 +148,13 @@ weights_df.to_excel(output_weights_path, index=False)
 print("Mixture spectra saved to:", output_spectra_path)
 print("Mixture weights saved to:", output_weights_path)
 
+df_for_mix_scat[spectrum_cols] = df_for_mix_scat[spectrum_cols].replace(0, np.nan)
+
 wavelength_col = "Wavelength"
 wavelengths = df_for_mix_scat[wavelength_col].values
+
+Diatom_Ptricornutum_scat = df_for_mix_scat["Diatom_Ptricornutum"].values
+Dinoflagellate_Symbiodiniumsp_scat = df_for_mix_scat["Dinoflagellate_Symbiodiniumsp"].values
 
 plt.figure(figsize=(8, 5))
 
@@ -160,3 +167,24 @@ plt.title("Pure (one-component) spectra with scattering")
 plt.legend(fontsize=7)
 plt.tight_layout()
 plt.savefig("pure_spectra_with_scattering.png")
+
+
+plt.figure(figsize=(8, 5))
+plt.plot(wavelengths, Diatom_Ptricornutum_no_scat, label="Diatom_Ptricornutum (no scatter)", alpha=0.8)
+plt.plot(wavelengths, Diatom_Ptricornutum_scat, label="Diatom_Ptricornutum (with scatter)", alpha=0.8)
+plt.xlabel("Wavelength (nm)")
+plt.ylabel("Absorption (normalized)")
+plt.title("Diatom_Ptricornutum: effect of scattering")
+plt.legend(fontsize=7)
+plt.tight_layout()
+plt.savefig("Diatom_Ptricornutum_scattering_effect.png")
+
+plt.figure(figsize=(8, 5))
+plt.plot(wavelengths, Dinoflagellate_Symbiodiniumsp_no_scat, label="Dinoflagellate_Symbiodiniumsp. (no scatter)", alpha=0.8)
+plt.plot(wavelengths, Dinoflagellate_Symbiodiniumsp_scat, label="Dinoflagellate_Symbiodiniumsp. (with scatter)", alpha=0.8)
+plt.xlabel("Wavelength (nm)")
+plt.ylabel("Absorption (normalized)")
+plt.title("Dinoflagellate_Symbiodiniumsp.: effect of scattering")
+plt.legend(fontsize=7)
+plt.tight_layout()
+plt.savefig("Dinoflagellate_Symbiodiniumsp_scattering_effect.png")
