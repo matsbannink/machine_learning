@@ -6,11 +6,15 @@ import matplotlib.pyplot as plt
 path = "Spectral_library_clean.xlsx"
 df_clean = pd.read_excel(path)
 
-# Keep a version with NaNs as the "truth"
-df_truth = df_clean.copy()
+# Normalize each spectrum column (except wavelength) to have mean=0 and std=1
+df_norm = df_clean.copy()
+spectrum_cols = [c for c in df_clean.columns if c != "Wavelength"]
+for col in spectrum_cols:
+    df_norm[col] = (df_clean[col] - df_clean[col].mean()) / df_clean[col].std()
 
-# For building linear combinations, we usually set NaN -> 0
-df_for_mix = df_clean.fillna(0)
+df_for_mix = df_norm.fillna(0)
+
+df_for_mix.to_excel("Spectral_library_clean_normalized.xlsx", index=False)
 
 # Confirm structure
 print("Columns:", df_for_mix.columns.tolist())
@@ -82,7 +86,6 @@ def generate_mixture_spectra(
 
     return mixtures_df, weights_df
 
-
 combination_sizes = (2, 3)      
 n_mixtures_per_combination = 5
 
@@ -94,7 +97,7 @@ mixtures_df, weights_df = generate_mixture_spectra(
     random_state=42
 )
 
-
+# Not using scattering
 output_spectra_path = "Spectral_library_with_mixtures.xlsx"
 output_weights_path = "Spectral_library_mixture_weights.xlsx"
 
@@ -103,80 +106,57 @@ weights_df.to_excel(output_weights_path, index=False)
 
 print("Mixture spectra saved to:", output_spectra_path)
 print("Mixture weights saved to:", output_weights_path)
-print("Spectra columns example:", mixtures_df.columns[:15])
-print("Weights head:")
-print(weights_df.head())
 
-
-# Change this to your local path if needed
-file_path = "Spectral_library_clean.xlsx"
-df_clean = pd.read_excel(file_path)
-
-# Replace NaNs with 0 for mixing
-df_mix = df_clean.fillna(0).copy()
-
-wavelengths = df_mix["Wavelength"].values
-species_cols = [c for c in df_mix.columns if c != "Wavelength"]
-
-rng = np.random.default_rng(42)
-
-# Choose some species to demonstrate (first 3 columns)
-chosen_species = species_cols[:3]
-
-# 2-species mixture (first two chosen species)
-species2 = chosen_species[:2]
-weights2 = rng.dirichlet(np.ones(2))
-mix2 = weights2[0] * df_mix[species2[0]].values + \
-       weights2[1] * df_mix[species2[1]].values
-
-# 3-species mixture (first three chosen species)
-species3 = chosen_species[:3]
-weights3 = rng.dirichlet(np.ones(3))
-mix3 = (weights3[0] * df_mix[species3[0]].values +
-        weights3[1] * df_mix[species3[1]].values +
-        weights3[2] * df_mix[species3[2]].values)
-
-print("2-species mixture weights:")
-for s, w in zip(species2, weights2):
-    print(f"  {s}: {w:.3f}")
-
-print("\n3-species mixture weights:")
-for s, w in zip(species3, weights3):
-    print(f"  {s}: {w:.3f}")
-
+wavelength_col = "Wavelength"
+wavelengths = df_norm[wavelength_col].values
 
 plt.figure(figsize=(8, 5))
 
-# Pure spectra
-for col in chosen_species:
-    plt.plot(wavelengths, df_mix[col].values, label=f"Pure {col}", alpha=0.7)
-
-# Mixtures
-plt.plot(
-    wavelengths, mix2,
-    label=f"Mix2 {species2}",
-    linewidth=2.5
-)
-plt.plot(
-    wavelengths, mix3,
-    label=f"Mix3 {species3}",
-    linewidth=2.5,
-    linestyle="--"
-)
-
-# Wavelengths from 800 -> 350 nm
-plt.gca().invert_xaxis()
+for col in spectrum_cols:
+    plt.plot(wavelengths, df_norm[col].values, label=col, alpha=0.8)
 
 plt.xlabel("Wavelength (nm)")
-plt.ylabel("Coefficient")
-plt.title("Example pure spectra and linear combinations")
+plt.ylabel("Absorption (normalized)")
+plt.title("Pure (one-component) spectra without scattering")
 plt.legend(fontsize=7)
 plt.tight_layout()
+plt.savefig("pure_spectra_without_scattering.png")
 
-plt.show()
 
-chosen_species = [
-    "Diatom_Ptricornutum",
-    "Diatom_Csimplex",
-    "Cyanobacteria_Synechosystis",
-]
+# Using scattering
+df_for_mix_scat = pd.read_excel("Spectral_library_with_scattering.xlsx")
+df_for_mix_scat[spectrum_cols] = df_for_mix_scat[spectrum_cols].replace(0, np.nan)
+combination_sizes = (2, 3)      
+n_mixtures_per_combination = 5
+
+mixtures_df, weights_df = generate_mixture_spectra(
+    df_for_mix_scat,
+    wavelength_col="Wavelength",
+    combination_sizes=combination_sizes,
+    n_mixtures_per_combination=n_mixtures_per_combination,
+    random_state=42
+)
+
+output_spectra_path = "Spectral_library_with_mixtures_scat.xlsx"
+output_weights_path = "Spectral_library_mixture_weights_scat.xlsx"
+
+mixtures_df.to_excel(output_spectra_path, index=False)
+weights_df.to_excel(output_weights_path, index=False)
+
+print("Mixture spectra saved to:", output_spectra_path)
+print("Mixture weights saved to:", output_weights_path)
+
+wavelength_col = "Wavelength"
+wavelengths = df_for_mix_scat[wavelength_col].values
+
+plt.figure(figsize=(8, 5))
+
+for col in spectrum_cols:
+    plt.plot(wavelengths, df_for_mix_scat[col].values, label=col, alpha=0.8)
+
+plt.xlabel("Wavelength (nm)")
+plt.ylabel("Absorption (normalized)")
+plt.title("Pure (one-component) spectra with scattering")
+plt.legend(fontsize=7)
+plt.tight_layout()
+plt.savefig("pure_spectra_with_scattering.png")
