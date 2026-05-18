@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-k = 1
+k = 0.5
 
 def scattering_spectrum(wavelengths_nm, k=4.0,
                         lambda_ref=350.0, scatter_at_ref=0.2):
