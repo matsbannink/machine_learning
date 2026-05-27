@@ -20,11 +20,11 @@ def generate_mixture_spectra(
     random_state: seed for reproducibility.
 
     Returns:
-        mixtures_df: DataFrame with:
-            - the wavelength column
-            - one column per pure spectrum (copied from df)
-            - additional columns for artificial mixtures
-        weights_df: DataFrame that stores the weights used for each mixture column
+    mixtures_df: DataFrame with:
+        - the wavelength column.
+        - one column per pure spectrum (copied from df).
+        - additional columns for artificial mixtures.
+    weights_df: DataFrame that stores the weights used for each mixture column
             (so you know the exact composition).
     """
     rng = np.random.default_rng(random_state)
