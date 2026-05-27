@@ -8,25 +8,23 @@ Contact: mats.bannink@student.uva.nl
 
 Supervisors: Volha Chukhutsina (Vrije Universiteit Amsterdam) and Joy Sanghavi (UvA)
 
-data/
-spectral_library_clean.xlsx
+data/spectral_library_clean.xlsx
 This excel contains all the pure absorption spectra of the photosynthetic microorganisms.
 
-spectral_library_scattering_cyanobacteria.xlsx
+data/spectral_library_scattering_cyanobacteria.xlsx
 This excel contains the scattered spectrum of Cyanobacteria Synechosystis
 
-spectral_library_scattering_diatomp_same_sample.xlsx
+data/spectral_library_scattering_diatomp_same_sample.xlsx
 This excel contains the unscattered and scattered spectra of Diatom Ptricornutum. This was measured using the exact same setup. So the influence from scattering can be analysed.
 
-spectral_library_with_scattering.xlsx
+data/spectral_library_with_scattering.xlsx
 This excel contains the unscattered and modeled scattering spectra for each species. This is done using the script building_spectra/scattering.ipynb
 
-building_spectra/
-linear_combination.py
+
+building_spectra/linear_combination.py
 This script contains the function generate_mixture_spectra. This function creates a linear combination of the spectra that are put in. This can be both pure and scattered spectra. Besides the linear combination it also creates a df that stores the weights for each mixture. This can be used to test the quality of the models.
 
-scattering.ipynb
+building_spectra/scattering.ipynb
 This notebook adds model scattering to the pure absorption spectra from data/spectral_library_clean.xlsx and outputs these to data/spectral_library_with_scattering.xlsx
-
 It uses an exponential fit based on the difference between the scattering data and unscattered data to model scattering. It stores the exponent. This is done for Cyanobacteria Synechosystis and Diatom Ptricornutum. 
 Because the exponent depends on the size of the organism. The exponents for the other 7 species are retrieved using another exponetial fit between these two points. The results for each species are plotted at the end of the file. These results are stored in spectral_library_with_scattering.xlsx
