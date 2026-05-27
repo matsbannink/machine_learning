@@ -3,3 +3,6 @@ ML/
 *.png
 *.pdf
 *.docx
+graphs/
+literature/
+__pycache__/
