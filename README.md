@@ -28,3 +28,13 @@ building_spectra/scattering.ipynb
 This notebook adds model scattering to the pure absorption spectra from data/spectral_library_clean.xlsx and outputs these to data/spectral_library_with_scattering.xlsx
 It uses an exponential fit based on the difference between the scattering data and unscattered data to model scattering. It stores the exponent. This is done for Cyanobacteria Synechosystis and Diatom Ptricornutum. 
 Because the exponent depends on the size of the organism. The exponents for the other 7 species are retrieved using another exponetial fit between these two points. The results for each species are plotted at the end of the file. These results are stored in spectral_library_with_scattering.xlsx
+
+characterization/characterization_of_chlam.ipynb
+Before characterization of all species, we tested on two species (Chlamydomonas). Here, we also tested the robustness of the MLP by seeing for which noise levels the MLP starts guessing (accuracy = 50%). It serves as a basic example of what MLPs can do with the spectra.
+characterization/characterization_all_species.ipynb
+This notebook characterizes the different species based on their absorption spectra using a MLP. Plots -e.g. confusion matrix -are added to show accuracy of the model.
+
+least_squares_models/nnls.ipynb
+This notebook predicts the weights using a Non-Negative Least Squares algorithm. It uses the scipy.optimize module, and an extra constraint is added, such that the weights can not sum up to more than 1. This is the standard notebook to understand the NNLS algorithm in the context of finding weights of the linear combinations of absorption spectra.
+least_squares_models/nnls_with_residual_boosting.ipynb
+This notebook tries to boost the output of the NNLS by fitting the residuals received from the NNLS by a MLP. Compared to nnls.ipynb, it is an add-on. This is an example of 'Ensemble Learning'. Right now, the NNLS alone performs better than this NNLS+MLP (so it does NOT WORK as wanted...)
