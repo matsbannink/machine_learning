@@ -1,0 +1,43 @@
+[project]
+name = "build-spectra"
+version = "1.0.0"
+description = "Generate mixtures containing photosynthetic microorganisms."
+readme = "README.md"
+authors = [
+    { name = "Mats Bannink", email = "mats.bannink@student.uva.nl" },
+    { name = "Dani Berndsen", email = "dani.berndsen@student.uva.nl" },
+    { name = "Jochem Amesz", email = "jochem.amesz@student.uva.nl" },
+    { name = "Nuri Hitzelberger", email = "nuri.hitzelberger@student.uva.nl" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "numpy>=2.4.6",
+    "pandas>=3.0.3",
+    "seaborn>=0.13.2",
+]
+
+[project.optional-dependencies]
+notebooks = [
+  "ipykernel>=7.2.0",
+  "matplotlib>=3.10.9",
+  "openpyxl>=3.1.5",
+  "scikit-learn>=1.8.0",
+  "scipy>=1.17.1",
+  "torch>=2.12.0",
+  "torchvision>=0.27.0",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu132"
+url = "https://download.pytorch.org/whl/cu132"
+explicit = true
+
+[tool.uv.sources]
+torchaudio = { index = "pytorch-cu132" }
+
+[project.scripts]
+build-spectra = "build_spectra:main"
+
+[build-system]
+requires = ["uv_build>=0.11.17,<0.12.0"]
+build-backend = "uv_build"

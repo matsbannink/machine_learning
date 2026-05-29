@@ -3,10 +3,13 @@ for the Machine Learning for Physics & Astronomy course at Universiteit van Amst
 
 The aim of this project is to use machine learning to find concentrations of photosynthetic microorganisms from the absorption spectra of water samples. This is useful for quickly assessing the water quality. In this project we used a couple of methods, namely an NNLS and an MLP to unmix model spectra and find the concentrations of the phototrophs.
 
-Authors: Jochem Amesz, Mats Bannink, Dani Berndsen and Nuri Hitzelberger 
+Authors: Jochem Amesz, Mats Bannink, Dani Berndsen and Nuri Hitzelberger\ 
 Contact: mats.bannink@student.uva.nl
 
 Supervisors: Volha Chukhutsina (Vrije Universiteit Amsterdam) and Joy Sanghavi (UvA)
+
+Installation:\
+
 
 data/spectral_library_clean.xlsx
 This excel contains all the pure absorption spectra of the photosynthetic microorganisms.
