@@ -9,7 +9,10 @@ Contact: mats.bannink@student.uva.nl
 Supervisors: Volha Chukhutsina (Vrije Universiteit Amsterdam) and Joy Sanghavi (UvA)
 
 Installation:\
-
+cd machine_learning\
+pip3 install uv\
+uv sync --extra notebooks\
+Select 'build-spectra' kernel in notebook.
 
 data/spectral_library_clean.xlsx
 This excel contains all the pure absorption spectra of the photosynthetic microorganisms.
